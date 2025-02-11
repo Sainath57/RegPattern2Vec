@@ -9,6 +9,7 @@ import java.util.*;
 public class RegexToDfa {
 
     private static Set<Integer>[] followPos;
+    private static String finalRegex;
     private static Node root;
     private static Set<State> DStates;
 
@@ -34,13 +35,15 @@ public class RegexToDfa {
         input = new HashSet<String>();
 
         String regex = getRegex(in);
-        getSymbols(regex);
+        //getSymbols(regex);
 
         /**
          * giving the regex to SyntaxTree class constructor and creating the
          * syntax tree of the regular expression in it
          */
         SyntaxTree st = new SyntaxTree(regex);
+        finalRegex = st.getFinalRegex();
+        getSymbols(finalRegex);
         root = st.getRoot(); //root of the syntax tree
         followPos = st.getFollowPos(); //the followpos of the syntax tree
 
@@ -88,27 +91,14 @@ public class RegexToDfa {
          * op is a set of characters have operational meaning for example '*'
          * could be a closure operator
          */
-        Set<Character> op = new HashSet<>();
-        Character[] ch = {'(', ')', '*', '|', '&', '.', '\\', '[', ']', '+'};
-        op.addAll(Arrays.asList(ch));
+        Set<Character> op = new HashSet<>(Arrays.asList('(', ')', '*', '|', '.', '[', ']', '+', '^', '{', '}', ','));
 
         input = new HashSet<>();
         symbNum = new HashMap<>();
         int num = 1;
         for (int i = 0; i < regex.length(); i++) {
             char charAt = regex.charAt(i);
-
-            /**
-             * if a character which is also an operator, is followed up by
-             * backslash ('\'), then we should consider it as a normal character
-             * and not an operator
-             */
-            if (op.contains(charAt)) {
-                if (i - 1 >= 0 && regex.charAt(i - 1) == '\\') {
-                    input.add("\\" + charAt);
-                    symbNum.put(num++, "\\" + charAt);
-                }
-            } else {
+            if (!op.contains(charAt)) {
                 input.add("" + charAt);
                 symbNum.put(num++, "" + charAt);
             }

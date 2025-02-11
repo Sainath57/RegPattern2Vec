@@ -10,6 +10,7 @@ import java.util.Set;
 public class SyntaxTree {
 
     private String regex;
+    private String finalRegex;
     private BinaryTree bt;
     private Node root; //the head of raw syntax tree
     private int numOfLeafs;
@@ -23,6 +24,7 @@ public class SyntaxTree {
          * generates the binary tree of the syntax tree
          */
         root = bt.generateTree(regex);
+        finalRegex = bt.getRegular();
         numOfLeafs = bt.getNumberOfLeafs();
         followPos = new Set[numOfLeafs];
         for (int i = 0; i < numOfLeafs; i++) {
@@ -150,5 +152,9 @@ public class SyntaxTree {
 
     public Node getRoot() {
         return this.root;
+    }
+
+    public String getFinalRegex() {
+        return finalRegex;
     }
 }

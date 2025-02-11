@@ -30,14 +30,14 @@ public class RegPattern2Vec {
 
         try (Transaction tx = gdbs.beginTx()) {
             // Iterate over all nodes to collect labels
-            for (Node node : gdbs.getAllNodes()) {
+            for (Node node : gdbs.beginTx().getAllNodes()) {
                 for (Label label : node.getLabels()) {
                     labelsSet.add(label.name());
                 }
             }
 
             // Iterate over all relationships to collect relationship types
-            for (Relationship rel : gdbs.getAllRelationships()) {
+            for (Relationship rel : gdbs.beginTx().getAllRelationships()) {
                 RelationshipType type = rel.getType();
                 relTypesSet.add(type.name());
             }
@@ -54,6 +54,3 @@ public class RegPattern2Vec {
         System.out.println("Relationship Types: " + relTypesList);
     }
     }
-    }
-
-}
