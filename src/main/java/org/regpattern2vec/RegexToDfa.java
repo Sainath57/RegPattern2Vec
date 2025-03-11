@@ -6,42 +6,45 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author @ALIREZA_KAY
+ * @author @Sainath Talakanti
  */
 public class RegexToDfa {
 
     private Set<Integer>[] followPos;
     public String finalRegex;
     private Node root;
-    private Set<State> DStates;
+    public Set<State> DStates;
 
-    private  Set<String> input; //set of characters is used in input regex
+    private  Set<String> input; //set of inputs is used in input regex
+    public List<State> stateNames = new ArrayList<>();
 
-    private  List<String> relationshipTypeList = new ArrayList<>();
-    private  String firstNodeName;
-    private  String regex;
+//    private  List<String> relationshipTypeList = new ArrayList<>();
+//    private  String firstNodeName;
+//    private  String regex;
 
     /**
-     * a number is assigned to each characters (even duplicate ones)
-     *
-     * @param symbNum is a hash map has a key which mentions the number and has
+     * a number is assigned to each input (even duplicate ones)
+     * <p>
+     * symbolNum is a hash map has a key which mentions the number and has
      * a value which mentions the corresponding character or sometimes a string
      * for characters is followed up by backslash like "\*"
      */
-    private static HashMap<Integer, String> symbNum;
+    private static HashMap<Integer, String> symbolNum;
 
-    public static void main(String[] args) {
-        List<String> reltypes = new ArrayList<>(Arrays.asList("ACTED_IN", "REVIEWED", "PRODUCED", "WROTE", "FOLLOWS", "DIRECTED"));
-        String fN = "Start";
-        String reg = "(ACTED_IN)*[REVIEWED]+((PRODUCED)|(WROTE)).(^FOLLOWS){2,}[DIRECTED]+";
-        new RegexToDfa(reltypes,fN,reg);
+//    public static void main(String[] args) {
+//        List<String> relTypes = new ArrayList<>(Arrays.asList("ACTED_IN", "REVIEWED", "PRODUCED", "WROTE", "FOLLOWS", "DIRECTED"));
+//        String fN = "Start";
+//        String reg = "(ACTED_IN)*[REVIEWED]+((PRODUCED)|(WROTE)).(^FOLLOWS){2,}[DIRECTED]+";
+//        new RegexToDfa(relTypes,fN,reg);
+//    }
+    public RegexToDfa() {
     }
 
     public RegexToDfa(List<String> relationshipTypeList, String firstNodeName, String regex) {
 
-        this.relationshipTypeList = relationshipTypeList;
-        this.firstNodeName = firstNodeName;
-        this.regex = regex;
+//        this.relationshipTypeList = relationshipTypeList;
+//        this.firstNodeName = firstNodeName;
+//        this.regex = regex;
 
         System.out.println("Input Regex: " + regex);
 
@@ -61,7 +64,7 @@ public class RegexToDfa {
             tokens.add(matcher.group());
         }
 
-        System.out.println("Tokens: " + tokens);
+        //System.out.println("Tokens: " + tokens);
 
         for (String token : tokens) {
             if(!token.equals("(") && !token.equals(")") && !token.equals("{") && !token.equals("}")
@@ -74,39 +77,45 @@ public class RegexToDfa {
         }
 
 //        String regex = getRegex(in);
-        //getSymbols(regex);
+//        getSymbols(regex);
 
-        /**
-         * giving the regex to SyntaxTree class constructor and creating the
-         * syntax tree of the regular expression in it
-         */
+        /// giving the regex to SyntaxTree class constructor and creating the
+        /// syntax tree of the regular expression in it
         SyntaxTree st = new SyntaxTree(regex+".#", relationshipTypeList, firstNodeName);
         finalRegex = st.getFinalRegex();
-        System.out.println("Syntax Tree Sample: " + st.getRoot().getLeft().getLeft().getLeft().getLeft().getLeft()
-                                                        .getLeft().getLeft().getLeft().getLeft().getLeft().getSymbol());
+        //System.out.println("Syntax Tree Sample: " + st.getRoot().getLeft().getLeft().getLeft().getLeft().getLeft()
+        //                                                .getLeft().getLeft().getLeft().getLeft().getLeft().getSymbol());
+        System.out.println("Final Regex: " + finalRegex);
         System.out.println("Number of Leaves: "+ st.getFollowPos().length);
         getSymbols(finalRegex);
         System.out.println("Input:" + input);
         root = st.getRoot(); //root of the syntax tree
-        followPos = st.getFollowPos(); //the followpos of the syntax tree
+        followPos = st.getFollowPos(); //the followPos of the syntax tree
 
-        /**
-         * creating the DFA using the syntax tree were created upside and
-         * returning the start state of the resulted DFA
-         */
+        /// creating the DFA using the syntax tree were created upside and
+        /// returning the start state of the resulted DFA
         State q0 = createDFA();
         DfaTraversal dfat = new DfaTraversal(q0, input);
 
         System.out.println("All transitions: ");
         System.out.println("DStates: " + DStates.size());
         for(State state: DStates) {
-            System.out.println("State Name: "+state.getName());
-            for(Map.Entry<String, State> entry: state.getAllMoves().entrySet()) {
-                System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue().getName());
-                System.out.println(state.getAllMoves().entrySet());
+            if(!DStates.isEmpty()) {
+                System.out.println("State Name: " + state.getName());
+                for (Map.Entry<String, State> entry : state.getAllMoves().entrySet()) {
+                    if (!entry.getKey().equals("#")) {
+                        System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue().getName());
+                        //System.out.println(state.getAllMoves().entrySet());
+                    }
+                }
             }
         }
-        
+
+//        for(State state: stateNames){
+//            System.out.println("State Name: "+state.getName());
+//        }
+
+        //System.out.println(getAllStateNames());
 //        String str = getStr(regex);
 //        boolean acc = false;
 //
@@ -148,7 +157,7 @@ public class RegexToDfa {
         Set<String> op = new HashSet<>(Arrays.asList("(", ")", "*", "|", ".", "[", "]", "+", "^", "{", "}", ","));
 
         input = new HashSet<>();
-        symbNum = new HashMap<>();
+        symbolNum = new HashMap<>();
         int num = 1;
         //Check if regex has incorrect relationShip types
         String splitter = "(?:\\{\\d+,\\})|(?:[^()\\[\\]\\*\\+\\.\\^]+)|(?:[()\\[\\]\\*\\+\\.\\^])";
@@ -164,7 +173,7 @@ public class RegexToDfa {
         for (String token : tokens) {
             if (!op.contains(token)) {
                 input.add(token);
-                symbNum.put(num++, token);
+                symbolNum.put(num++, token);
             }
         }
     }
@@ -179,6 +188,8 @@ public class RegexToDfa {
         }
         DStates.clear();
         DStates.add(q0);
+        //System.out.println("Q0: " + q0.getName());
+        stateNames.add(q0);
 
         while (true) {
             boolean exit = true;
@@ -201,7 +212,7 @@ public class RegexToDfa {
             for (String a : input) {
                 Set<Integer> U = new HashSet<>();
                 for (int p : name) {
-                    if (symbNum.get(p).equals(a)) {
+                    if (symbolNum.get(p).equals(a)) {
                         U.addAll(followPos[p - 1]);
                     }
                 }
@@ -221,6 +232,7 @@ public class RegexToDfa {
                         q.setAccept();
                     }
                     DStates.add(q);
+                    if(!q.getName().isEmpty()){stateNames.add(q);}
                     tmp = q;
                 }
                 s.addMove(a, tmp);
@@ -235,4 +247,23 @@ public class RegexToDfa {
         return "";
     }
 
+    public HashMap<Set<Integer>,Map.Entry<String, State>> getAllTransitions() {
+
+        HashMap<Set<Integer>,Map.Entry<String, State>> allTransitions = new HashMap<>();
+
+        for(State state: DStates) {
+            for(Map.Entry<String, State> entry: state.getAllMoves().entrySet()) {
+                allTransitions.put(state.getName(),entry);
+            }
+        }
+        return allTransitions;
+    }
+
+    public List<Set<Integer>> getAllStateNames() {
+        List<Set<Integer>> allStateNames = new ArrayList<>();
+        for(State state: stateNames){
+            allStateNames.add(state.getName());
+        }
+        return allStateNames;
+    }
 }

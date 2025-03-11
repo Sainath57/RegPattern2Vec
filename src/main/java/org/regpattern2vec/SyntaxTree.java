@@ -23,7 +23,7 @@ public class SyntaxTree {
 
     public SyntaxTree(String regex, List<String> relationshipTypeList, String firstNodeName) {
 
-        System.out.println("Entering SyntaxTree");
+        //System.out.println("Entering SyntaxTree");
 
         this.relationshipTypeList = relationshipTypeList;
         this.firstNodeName = firstNodeName;

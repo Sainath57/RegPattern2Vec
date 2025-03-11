@@ -21,6 +21,7 @@ public class State {
     
     private boolean IsAcceptable;
     private boolean IsMarked;
+    public int transformedName;
     
     public State(int ID){
         this.ID = ID;
@@ -28,6 +29,7 @@ public class State {
         name = new HashSet<>();
         IsAcceptable = false;
         IsMarked = false;
+        transformedName = 0;
     }
     
     public void addMove(String symbol, State s){
@@ -71,6 +73,14 @@ public class State {
 
     public int getID(){
         return ID;
+    }
+
+    public void setTransformedName(int number){
+        this.transformedName = number;
+    }
+
+    public int getTransformedName(){
+        return transformedName;
     }
     
 }

@@ -46,7 +46,7 @@ class BinaryTree {
     // Generates tree using the regular expression and returns it's root
     public Node generateTree(String regular1, List<String> relationshipTypeList, String firstNodeName) {
 
-        System.out.println("Entering BinaryTree");
+        //System.out.println("Entering BinaryTree");
 
         this.relationshipTypeList = relationshipTypeList;
         this.firstNodeName = firstNodeName;
@@ -72,13 +72,13 @@ class BinaryTree {
         //System.out.println("After concatenation: " + regular2);
 
         String regular3 = plusToStart(regular2);
-        System.out.println("After plusToStar: " + regular3);
+        //System.out.println("After plusToStar: " + regular3);
 
         String regular4 = complementReplacement(regular3);
-        System.out.println("After complementReplacement: " + regular4);
+        //System.out.println("After complementReplacement: " + regular4);
 
         regular = flowerBracketReplacement(regular4);
-        System.out.println("After flowerBracketReplacement: " + regular);
+        //System.out.println("After flowerBracketReplacement: " + regular);
         
         // Cleaning stacks
         stackNode.clear();
@@ -94,7 +94,7 @@ class BinaryTree {
         while (matcher.find()) {
             tokens.add(matcher.group());
         }
-        System.out.println("tokens : " + tokens);
+        //System.out.println("tokens : " + tokens);
 
         for (String token : tokens) {
 
@@ -238,7 +238,7 @@ class BinaryTree {
     // concatenates to each other
     private String AddConcat(String regular) {
 
-        System.out.println("Entering AddConcat");
+        //System.out.println("Entering AddConcat");
 
         StringBuilder newRegular = new StringBuilder();
 
@@ -289,7 +289,7 @@ class BinaryTree {
 
     private String plusToStart(String regular) {
 
-        System.out.println("Entering plusToStart");
+        //System.out.println("Entering plusToStart");
 
         String newRegular = regular;
         for(int i = 0; i<regular.length(); i++) {
@@ -322,7 +322,7 @@ class BinaryTree {
 
     private String complementReplacement(String regular) {
 
-        System.out.println("Entering complementReplacement");
+        //System.out.println("Entering complementReplacement");
 
         String newRegular = regular;
 
@@ -333,18 +333,18 @@ class BinaryTree {
                         List<String> tempList = new ArrayList<>(relationshipTypeList);
                         if (regular.charAt(j) == ')' || regular.charAt(j) == ']') {
                             temp = regular.substring(i + 1, j);
-                            System.out.println("temp: " + temp);
+                            //System.out.println("temp: " + temp);
                             String tempStr;
                             tempStr = temp;
                             tempList.remove(tempStr);
-                            System.out.println("tempList: " + tempList);
+                            //System.out.println("tempList: " + tempList);
                             temp = "(" + tempList.get(0) + ")";
                             for (int k = 1; k < tempList.size() - 1; k++) {
                                 temp = temp + "|" + "(" + tempList.get(k) + ")";
-                                System.out.println("Compliment temp1: " + temp);
+                                //System.out.println("Compliment temp1: " + temp);
                             }
                             temp = temp + "|" + "(" + tempList.get(tempList.size() - 1) + ")";
-                            System.out.println("Compliment temp0: " + temp);
+                            //System.out.println("Compliment temp0: " + temp);
                             // Replace the character at position i+1 only:
                             newRegular = newRegular.substring(0, i) + temp + newRegular.substring(j);
                             break;
@@ -360,7 +360,7 @@ class BinaryTree {
 
     private String flowerBracketReplacement(String regular) {
 
-        System.out.println("Entering flowerBracketReplacement");
+        //System.out.println("Entering flowerBracketReplacement");
 
         //ab*a(^b){2,}(a|b)(^a)d*
         String newRegular = regular;
@@ -380,22 +380,22 @@ class BinaryTree {
                         }
                         j--;
                     }
-                    System.out.println("temp1 = " + temp1);
+                    //System.out.println("temp1 = " + temp1);
                     if (newRegular.charAt(i + 3) == '}') {
                         a = Integer.parseInt(String.valueOf(newRegular.charAt(i+1)));
                         temp2 = newRegular.substring(i, i+4);
-                        System.out.println("temp2 = " + temp2);
+                        //System.out.println("temp2 = " + temp2);
                         temp3 = temp1;
                         while(a>1) {
                             temp3 = temp3 + ".";
                             temp3 = temp3 + temp1;
-                            System.out.println(a + ") temp3 = " + temp3);
+                            //System.out.println(a + ") temp3 = " + temp3);
                             a--;
                         }
                         temp3 = "." + temp3 + "*";
                         newRegular = newRegular.substring(0, i) + temp3 + newRegular.substring(i+4);
                     }
-                    System.out.println("temp1 = " + temp1);
+                    //System.out.println("temp1 = " + temp1);
 
                     if (newRegular.charAt(i + 4) == '}') {
                         a = newRegular.charAt(i + 1);

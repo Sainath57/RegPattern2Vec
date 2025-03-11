@@ -51,14 +51,17 @@ public class RegPattern2Vec {
         List<String> relTypesList = new ArrayList<>(relTypesSet);
 
         RegexToDfa rd = new RegexToDfa(relTypesList, startNode, regPattern);
+        //SyntaxTree st = new SyntaxTree(regPattern,)
 
         // Now you have labelsList and relTypesList for further processing.
-        System.out.println("Node Labels: " + labelsList);
-        System.out.println("Relationship Types: " + relTypesList);
+//        System.out.println("Node Labels: " + labelsList);
+//        System.out.println("Relationship Types: " + relTypesList);
+//
+//        System.out.println("RegexToDfa: " + rd.finalRegex);
 
-        System.out.println("RegexToDfa: " + rd.finalRegex);
 
-        return Stream.of(new Output("Labels list : "+labelsList+" Reltypes list : "+relTypesList+" RegexToDfa : "+rd.finalRegex));
+
+        return Stream.of(new Output("Labels list : "+labelsList+" Reltypes list : "+relTypesList+" RegexToDfa : "+rd.getAllTransitions().keySet()  ));
     }
 
     public static class Output {
