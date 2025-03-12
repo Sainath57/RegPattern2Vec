@@ -18,8 +18,7 @@ public class RegexToDfa {
     private  Set<String> input; //set of inputs is used in input regex
     public List<State> stateNames = new ArrayList<>();
 
-//    private  List<String> relationshipTypeList = new ArrayList<>();
-//    private  String firstNodeName;
+//    private  List<String> TypeList = new ArrayList<>();
 //    private  String regex;
 
     /**
@@ -40,10 +39,9 @@ public class RegexToDfa {
     public RegexToDfa() {
     }
 
-    public RegexToDfa(List<String> relationshipTypeList, String firstNodeName, String regex) {
+    public RegexToDfa(List<String> TypeList, String regex) {
 
-//        this.relationshipTypeList = relationshipTypeList;
-//        this.firstNodeName = firstNodeName;
+//        this.TypeList = TypeList;
 //        this.regex = regex;
 
         System.out.println("Input Regex: " + regex);
@@ -69,7 +67,7 @@ public class RegexToDfa {
         for (String token : tokens) {
             if(!token.equals("(") && !token.equals(")") && !token.equals("{") && !token.equals("}")
                     && !token.equals("[") && !token.equals("]") && !token.equals("*") && !token.equals("+")
-                        && !token.equals(".") && !token.equals("|") && !token.equals("^") && !token.matches("\\{\\d+,\\}")  && !relationshipTypeList.contains(token)) {
+                        && !token.equals(".") && !token.equals("|") && !token.equals("^") && !token.matches("\\{\\d+,\\}")  && !TypeList.contains(token)) {
                 System.out.println("Incorrect Relationship Type in Given Regular Expression");
                 return;
 
@@ -81,7 +79,7 @@ public class RegexToDfa {
 
         /// giving the regex to SyntaxTree class constructor and creating the
         /// syntax tree of the regular expression in it
-        SyntaxTree st = new SyntaxTree(regex+".#", relationshipTypeList, firstNodeName);
+        SyntaxTree st = new SyntaxTree(regex+".#", TypeList);
         finalRegex = st.getFinalRegex();
         //System.out.println("Syntax Tree Sample: " + st.getRoot().getLeft().getLeft().getLeft().getLeft().getLeft()
         //                                                .getLeft().getLeft().getLeft().getLeft().getLeft().getSymbol());

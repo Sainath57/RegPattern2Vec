@@ -18,22 +18,21 @@ public class SyntaxTree {
     private int numOfLeafs;
     private Set<Integer> followPos[];
 
-    private List<String> relationshipTypeList = new ArrayList<>();
-    private  String firstNodeName;
+    private List<String> TypeList = new ArrayList<>();
 
-    public SyntaxTree(String regex, List<String> relationshipTypeList, String firstNodeName) {
+
+    public SyntaxTree(String regex, List<String> TypeList) {
 
         //System.out.println("Entering SyntaxTree");
 
-        this.relationshipTypeList = relationshipTypeList;
-        this.firstNodeName = firstNodeName;
+        this.TypeList = TypeList;
         this.regex = regex;
         bt = new BinaryTree();
         
         /**
          * generates the binary tree of the syntax tree
          */
-        root = bt.generateTree(regex, relationshipTypeList, firstNodeName);
+        root = bt.generateTree(regex, TypeList);
         finalRegex = bt.getRegular();
         numOfLeafs = bt.getNumberOfLeafs();
         followPos = new Set[numOfLeafs];

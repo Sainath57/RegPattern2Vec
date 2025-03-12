@@ -1,5 +1,6 @@
 package org.regpattern2vec;
 
+import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Path;
 
@@ -8,15 +9,18 @@ import java.util.*;
 public class Walks {
 
     private Path path;
-    List<String> relTypes = new ArrayList<>(Arrays.asList("ACTED_IN", "REVIEWED", "PRODUCED", "WROTE", "FOLLOWS", "DIRECTED"));
-    String fN = "Start";
+    List<String> Types = new ArrayList<>(Arrays.asList("ACTED_IN", "REVIEWED", "PRODUCED", "WROTE", "FOLLOWS", "DIRECTED"));
     String reg = "(ACTED_IN)*[REVIEWED]+((PRODUCED)|(WROTE)).(^FOLLOWS){2,}[DIRECTED]+";
-    public RegexToDfa regexToDfa = new RegexToDfa(relTypes,fN,reg);
+    public RegexToDfa regexToDfa = new RegexToDfa(Types,reg);
     public final List<State> allStates = regexToDfa.stateNames;
     public int noOfStates;
     public int walkLength;
 
-    public Walks(String startNode, int noOfWalks, int walkLength) {
+    public Walks(GraphDatabaseService gdbs, RegexToDfa rd, Node node, Long walkLength) {
+
+    }
+
+    public List<List<String>> Walks(String startNode, int noOfWalks, int walkLength) {
 
         this.noOfStates = noOfWalks;
         this.walkLength = walkLength;
@@ -40,11 +44,12 @@ public class Walks {
 //                }
 //            }
 //        }
+        return List.of();
     }
 
-    public static void main(String[] args) {
-        new Walks("startNode", 10, 10);
-    }
+//    public static void main(String[] args) {
+//        new RegularExpressionRandomWalks("startNode", 10, 10);
+//    }
 
     public void transformStateNames() {
         int counter = 0;

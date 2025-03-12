@@ -20,12 +20,18 @@ public class RegPattern2Vec {
     @Context
     public GraphDatabaseService gdbs;
 
+
+    List<List<Double>> embeddings = new ArrayList<>();
+
     @Procedure(value = "embeddings1.regpattern2vec", mode = Mode.READ)
     @Description("Generates RegPattern2Vec")
 
-    public Stream<Output> regpattern2vec(@Name("startNode") String startNode, @Name("regPattern") String regPattern, @Name("walkLength") Long walkLength, @Name("walkCount") Long walkCount) {
+    public Stream<List<List<Double>>> regpattern2vec(@Name("regPattern") String regPattern, @Name("walkLength") Long walkLength, @Name("walkCount") Long walkCount) {
         // Your procedure logic here
         // Using sets to avoid duplicates
+
+        List<String> regularExpressionRandomWalks = new ArrayList<>();
+
         Set<String> labelsSet = new HashSet<>();
         Set<String> relTypesSet = new HashSet<>();
 
@@ -50,7 +56,7 @@ public class RegPattern2Vec {
         List<String> labelsList = new ArrayList<>(labelsSet);
         List<String> relTypesList = new ArrayList<>(relTypesSet);
 
-        RegexToDfa rd = new RegexToDfa(relTypesList, startNode, regPattern);
+        RegexToDfa rd = new RegexToDfa(relTypesList, regPattern);
         //SyntaxTree st = new SyntaxTree(regPattern,)
 
         // Now you have labelsList and relTypesList for further processing.
@@ -60,15 +66,47 @@ public class RegPattern2Vec {
 //        System.out.println("RegexToDfa: " + rd.finalRegex);
 
 
+        try (Transaction tx = gdbs.beginTx()) {
+            for (int i = 1; i <= walkCount; i++) {
+                for (Node node : tx.getAllNodes()){
 
-        return Stream.of(new Output("Labels list : "+labelsList+" Reltypes list : "+relTypesList+" RegexToDfa : "+rd.getAllTransitions().keySet()  ));
-    }
+                    regularExpressionRandomWalks = RegularExpressionRandomWalks(gdbs,rd, node, walkLength);
+                    HeterogenousSkipGram(embeddings,regularExpressionRandomWalks, walkLength);
 
-    public static class Output {
-        public String out;
-
-        public Output(String out) {
-            this.out = out;
+                }
+            }
         }
+
+
+        return Stream.of(embeddings);
     }
+
+    private List<String> RegularExpressionRandomWalks(GraphDatabaseService gd, RegexToDfa rd, Node node, Long walkLength){
+
+        List<String> regularExpressionRandomWalks = new ArrayList<>(Integer.parseInt(node.toString()));
+
+        for(int i = 1; i <= walkLength-1; i++){
+
+            Node u = null;
+
+            //Logic
+
+            regularExpressionRandomWalks.add(u.toString());
+
+        }
+
+        return regularExpressionRandomWalks;
+
+    }
+
+    private void HeterogenousSkipGram(List<List<Double>> embeddings, List<String> regularExpressionRandomWalks, Long walkLength) {
+
+        for(int i = 1; i < walkLength; i++) {
+
+            String node = regularExpressionRandomWalks.get(i);
+
+        }
+
+    }
+
 }

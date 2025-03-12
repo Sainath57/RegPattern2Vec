@@ -40,16 +40,14 @@ class BinaryTree {
     private final Set<String> input = new HashSet<String>();
     private ArrayList<String> op = new ArrayList<>();
 
-    private List<String> relationshipTypeList = new ArrayList<>();
-    private  String firstNodeName;
+    private List<String> TypeList = new ArrayList<>();
 
     // Generates tree using the regular expression and returns it's root
-    public Node generateTree(String regular1, List<String> relationshipTypeList, String firstNodeName) {
+    public Node generateTree(String regular1, List<String> TypeList) {
 
         //System.out.println("Entering BinaryTree");
 
-        this.relationshipTypeList = relationshipTypeList;
-        this.firstNodeName = firstNodeName;
+        this.TypeList = TypeList;
 
         op.addAll(Arrays.asList("*", "|", "."));
 
@@ -64,7 +62,7 @@ class BinaryTree {
 //        input.addAll(Arrays.asList(ch));
         //input.addAll(Arrays.asList(integer));
 
-        input.addAll(relationshipTypeList);
+        input.addAll(TypeList);
         input.addAll(Arrays.asList(others));
 
         // Generate regular expression with the concatenation
@@ -330,7 +328,7 @@ class BinaryTree {
                 if (newRegular.charAt(i) == '^' && (newRegular.charAt(i - 1) == '(' || newRegular.charAt(i - 1) == '[')) {
                     for (int j = i + 1; j < regular.length(); j++) {
                         String temp;
-                        List<String> tempList = new ArrayList<>(relationshipTypeList);
+                        List<String> tempList = new ArrayList<>(TypeList);
                         if (regular.charAt(j) == ')' || regular.charAt(j) == ']') {
                             temp = regular.substring(i + 1, j);
                             //System.out.println("temp: " + temp);
