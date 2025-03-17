@@ -12,12 +12,12 @@ import java.util.Set;
  *
  * @author @ALIREZA_KAY
  */
-public class LeafNode extends Node {
+public class LeafNodes extends Nodes {
 
     private int num;
     private Set<Integer> followPos;
 
-    public LeafNode(String symbol, int num) {
+    public LeafNodes(String symbol, int num) {
         super(symbol);
         this.num = num;
         followPos = new HashSet<>();

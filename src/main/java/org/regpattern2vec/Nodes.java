@@ -8,18 +8,18 @@ import java.util.Set;
  * @author @ALIREZA_KAY
  */
 
-public class Node {
+public class Nodes {
 
     private String symbol;
-    private Node parent;
-    private Node left;
-    private Node right;
+    private Nodes parent;
+    private Nodes left;
+    private Nodes right;
 
     private Set<Integer> firstPos;
     private Set<Integer> lastPos;
     private boolean nullable;
 
-    public Node(String symbol) {
+    public Nodes(String symbol) {
         this.symbol = symbol;
         parent = null;
         left = null;
@@ -47,42 +47,42 @@ public class Node {
     /**
      * @return the parent
      */
-    public Node getParent() {
+    public Nodes getParent() {
         return parent;
     }
 
     /**
      * @param parent the parent to set
      */
-    public void setParent(Node parent) {
+    public void setParent(Nodes parent) {
         this.parent = parent;
     }
 
     /**
      * @return the left
      */
-    public Node getLeft() {
+    public Nodes getLeft() {
         return left;
     }
 
     /**
      * @param left the left to set
      */
-    public void setLeft(Node left) {
+    public void setLeft(Nodes left) {
         this.left = left;
     }
 
     /**
      * @return the right
      */
-    public Node getRight() {
+    public Nodes getRight() {
         return right;
     }
 
     /**
      * @param right the right to set
      */
-    public void setRight(Node right) {
+    public void setRight(Nodes right) {
         this.right = right;
     }
 

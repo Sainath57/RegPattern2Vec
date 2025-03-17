@@ -12,7 +12,7 @@ public class RegexToDfa {
 
     private Set<Integer>[] followPos;
     public String finalRegex;
-    private Node root;
+    private Nodes root;
     public Set<State> DStates;
 
     private  Set<String> input; //set of inputs is used in input regex

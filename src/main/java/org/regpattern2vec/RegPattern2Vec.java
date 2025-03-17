@@ -84,15 +84,18 @@ public class RegPattern2Vec {
     private List<String> RegularExpressionRandomWalks(GraphDatabaseService gd, RegexToDfa rd, Node node, Long walkLength){
 
         List<String> regularExpressionRandomWalks = new ArrayList<>(Integer.parseInt(node.toString()));
+        Iterable<Relationship> allNeighbourRelationships = node.getRelationships();
 
         for(int i = 1; i <= walkLength-1; i++){
 
             Node u = null;
 
             //Logic
+            if(nodeSelectionProbability(gd,rd,u)) {
 
-            regularExpressionRandomWalks.add(u.toString());
+                regularExpressionRandomWalks.add(u.toString());
 
+            }
         }
 
         return regularExpressionRandomWalks;
@@ -107,6 +110,15 @@ public class RegPattern2Vec {
 
         }
 
+    }
+
+    private void sendValuesIntoFile(String fileName) {
+
+    }
+
+    private boolean nodeSelectionProbability(GraphDatabaseService gd, RegexToDfa rd, Node node) {
+
+        return true;
     }
 
 }

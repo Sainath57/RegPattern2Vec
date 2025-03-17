@@ -14,7 +14,7 @@ public class SyntaxTree {
     private String regex;
     private String finalRegex;
     private BinaryTree bt;
-    private Node root; //the head of raw syntax tree
+    private Nodes root; //the head of raw syntax tree
     private int numOfLeafs;
     private Set<Integer> followPos[];
 
@@ -45,13 +45,13 @@ public class SyntaxTree {
         generateFollowPos(root);
     }
 
-    private void generateNullable(Node node) {
+    private void generateNullable(Nodes node) {
         if (node == null) {
             return;
         }
-        if (!(node instanceof LeafNode)) {
-            Node left = node.getLeft();
-            Node right = node.getRight();
+        if (!(node instanceof LeafNodes)) {
+            Nodes left = node.getLeft();
+            Nodes right = node.getRight();
             generateNullable(left);
             generateNullable(right);
             switch (node.getSymbol()) {
@@ -68,17 +68,17 @@ public class SyntaxTree {
         }
     }
 
-    private void generateFirstposLastPos(Node node) {
+    private void generateFirstposLastPos(Nodes node) {
         if (node == null) {
             return;
         }
-        if (node instanceof LeafNode) {
-            LeafNode lnode = (LeafNode) node;
+        if (node instanceof LeafNodes) {
+            LeafNodes lnode = (LeafNodes) node;
             node.addToFirstPos(lnode.getNum());
             node.addToLastPos(lnode.getNum());
         } else {
-            Node left = node.getLeft();
-            Node right = node.getRight();
+            Nodes left = node.getLeft();
+            Nodes right = node.getRight();
             generateFirstposLastPos(left);
             generateFirstposLastPos(right);
             switch (node.getSymbol()) {
@@ -112,12 +112,12 @@ public class SyntaxTree {
         }
     }
 
-    private void generateFollowPos(Node node) {
+    private void generateFollowPos(Nodes node) {
         if (node == null) {
             return;
         }
-        Node left = node.getLeft();
-        Node right = node.getRight();
+        Nodes left = node.getLeft();
+        Nodes right = node.getRight();
         switch (node.getSymbol()) {
             case ".":
                 Object lastpos_c1[] = left.getLastPos().toArray();
@@ -139,7 +139,7 @@ public class SyntaxTree {
 
     }
 
-    public void show(Node node) {
+    public void show(Nodes node) {
         if (node == null) {
             return;
         }
@@ -159,7 +159,7 @@ public class SyntaxTree {
         return followPos;
     }
 
-    public Node getRoot() {
+    public Nodes getRoot() {
         return this.root;
     }
 

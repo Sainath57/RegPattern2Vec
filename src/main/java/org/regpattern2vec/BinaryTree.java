@@ -33,7 +33,7 @@ class BinaryTree {
     private int leafNodeID = 0;
     
     // Stacks for symbol nodes and operators
-    private final Stack<Node> stackNode = new Stack<>();
+    private final Stack<Nodes> stackNode = new Stack<>();
     private final Stack<String> operatorStack = new Stack<String>();
 
     // Set of inputs
@@ -43,7 +43,7 @@ class BinaryTree {
     private List<String> TypeList = new ArrayList<>();
 
     // Generates tree using the regular expression and returns it's root
-    public Node generateTree(String regular1, List<String> TypeList) {
+    public Nodes generateTree(String regular1, List<String> TypeList) {
 
         //System.out.println("Entering BinaryTree");
 
@@ -179,9 +179,9 @@ class BinaryTree {
     // Do the star operation
     private void star() {
         // Retrieve top Node from Stack
-        Node node = stackNode.pop();
+        Nodes node = stackNode.pop();
 
-        Node root = new Node("*");
+        Nodes root = new Nodes("*");
         root.setLeft(node);
         root.setRight(null);
         node.setParent(root);
@@ -193,10 +193,10 @@ class BinaryTree {
     // Do the concatenation operation
     private void concatenation() {
         // retrieve node 1 and 2 from stackNode
-        Node node2 = stackNode.pop();
-        Node node1 = stackNode.pop();
+        Nodes node2 = stackNode.pop();
+        Nodes node1 = stackNode.pop();
 
-        Node root = new Node(".");
+        Nodes root = new Nodes(".");
         root.setLeft(node1);
         root.setRight(node2);
         node1.setParent(root);
@@ -209,10 +209,10 @@ class BinaryTree {
     // Makes union of sub Node 1 with sub Node 2
     private void union() {
         // Load two Node in stack into variables
-        Node node2 = stackNode.pop();
-        Node node1 = stackNode.pop();
+        Nodes node2 = stackNode.pop();
+        Nodes node1 = stackNode.pop();
 
-        Node root = new Node("|");
+        Nodes root = new Nodes("|");
         root.setLeft(node1);
         root.setRight(node2);
         node1.setParent(root);
@@ -224,7 +224,7 @@ class BinaryTree {
 
     // Push input symbol into stackNode
     private void pushStack(String symbol) {
-        Node node = new LeafNode(symbol, ++leafNodeID);
+        Nodes node = new LeafNodes(symbol, ++leafNodeID);
         node.setLeft(null);
         node.setRight(null);
 
@@ -423,7 +423,7 @@ class BinaryTree {
     }
     
     /* This method is here just to test buildTree() */
-    public void printInorder(Node node) {
+    public void printInorder(Nodes node) {
         if (node == null) {
             return;
         }
