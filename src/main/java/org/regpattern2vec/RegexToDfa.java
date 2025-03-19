@@ -13,7 +13,9 @@ public class RegexToDfa {
     private Set<Integer>[] followPos;
     public String finalRegex;
     private Nodes root;
-    public Set<State> DStates;
+    public List<State> DStates;
+
+    public HashMap<Integer,HashMap<String,Integer>> transitions;
 
     private  Set<String> input; //set of inputs is used in input regex
     public List<State> stateNames = new ArrayList<>();
@@ -32,9 +34,8 @@ public class RegexToDfa {
 
 //    public static void main(String[] args) {
 //        List<String> relTypes = new ArrayList<>(Arrays.asList("ACTED_IN", "REVIEWED", "PRODUCED", "WROTE", "FOLLOWS", "DIRECTED"));
-//        String fN = "Start";
 //        String reg = "(ACTED_IN)*[REVIEWED]+((PRODUCED)|(WROTE)).(^FOLLOWS){2,}[DIRECTED]+";
-//        new RegexToDfa(relTypes,fN,reg);
+//        new RegexToDfa(relTypes,reg);
 //    }
     public RegexToDfa() {
     }
@@ -48,8 +49,9 @@ public class RegexToDfa {
 
 //        Scanner in = new Scanner(System.in);
         //allocating
-        DStates = new HashSet<>();
+        DStates = new ArrayList<>();
         input = new HashSet<String>();
+        transitions = new HashMap<>();
 
         //Check if regex has incorrect relationShip types
         String splitter = "(?:\\{\\d+,\\})|(?:[^()\\[\\]\\*\\+\\.\\^]+)|(?:[()\\[\\]\\*\\+\\.\\^])";
@@ -97,16 +99,37 @@ public class RegexToDfa {
 
         System.out.println("All transitions: ");
         System.out.println("DStates: " + DStates.size());
+
+        transformStateNames();
+
         for(State state: DStates) {
             if(!DStates.isEmpty()) {
-                System.out.println("State Name: " + state.getName());
+                if(state.getTransformedName() == 1){
+                    state.setIsFirstState();
+                }
+                if(state.getTransformedName() == DStates.size()){
+                    state.setIsLastState();
+                }
+                System.out.println("State Name: " + state.getTransformedName());
                 for (Map.Entry<String, State> entry : state.getAllMoves().entrySet()) {
                     if (!entry.getKey().equals("#")) {
-                        System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue().getName());
+                        transitions.computeIfAbsent(state.getTransformedName(), k -> new HashMap<>())
+                                .put(entry.getKey(), entry.getValue().getTransformedName());
+                        System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue().getTransformedName());
+                        if(entry.getValue().isFirstState){
+                            System.out.println("First State: " + entry.getValue().getTransformedName());
+                        }
+                        if(entry.getValue().isLastState){
+                            System.out.println("Last State: " + entry.getValue().getTransformedName());
+                        }
                         //System.out.println(state.getAllMoves().entrySet());
                     }
                 }
             }
+        }
+
+        for(Map.Entry<Integer,HashMap<String,Integer>> entry: transitions.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
 
 //        for(State state: stateNames){
@@ -261,6 +284,21 @@ public class RegexToDfa {
         List<Set<Integer>> allStateNames = new ArrayList<>();
         for(State state: stateNames){
             allStateNames.add(state.getName());
+        }
+        return allStateNames;
+    }
+
+    public void transformStateNames() {
+        int counter = 0;
+        for (State state : DStates) {
+            state.setTransformedName(++counter);
+        }
+    }
+
+    public List<Integer> getTransformedStateNames() {
+        List<Integer> allStateNames = new ArrayList<>();
+        for(State state: DStates){
+            allStateNames.add(state.getTransformedName());
         }
         return allStateNames;
     }

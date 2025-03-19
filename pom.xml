@@ -55,23 +55,23 @@
             <version>4.29.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-http</artifactId>
-            <version>12.1.0.alpha1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.eclipse.jetty</groupId>-->
+<!--            <artifactId>jetty-http</artifactId>-->
+<!--            <version>12.1.0.alpha1</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.eclipse.jetty.http2</groupId>
-            <artifactId>http2-common</artifactId>
-            <version>11.0.24</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.eclipse.jetty.http2</groupId>-->
+<!--            <artifactId>http2-common</artifactId>-->
+<!--            <version>11.0.24</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>12.1.0.alpha1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.eclipse.jetty</groupId>-->
+<!--            <artifactId>jetty-server</artifactId>-->
+<!--            <version>12.1.0.alpha1</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.apache.lucene</groupId>
@@ -81,8 +81,16 @@
 
         <dependency>
             <groupId>io.netty</groupId>
-            <artifactId>netty-common</artifactId>
-            <version>5.0.0.Alpha2</version>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.115.Final</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

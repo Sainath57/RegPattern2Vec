@@ -5,9 +5,7 @@
  */
 package org.regpattern2vec;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -22,6 +20,8 @@ public class State {
     private boolean IsAcceptable;
     private boolean IsMarked;
     public int transformedName;
+    public boolean isFirstState;
+    public boolean isLastState;
     
     public State(int ID){
         this.ID = ID;
@@ -30,6 +30,8 @@ public class State {
         IsAcceptable = false;
         IsMarked = false;
         transformedName = 0;
+        isFirstState = false;
+        isLastState = false;
     }
     
     public void addMove(String symbol, State s){
@@ -82,5 +84,21 @@ public class State {
     public int getTransformedName(){
         return transformedName;
     }
-    
+
+    public void setIsFirstState(){
+        isFirstState = true;
+    }
+
+    public void setIsLastState(){
+        isLastState = true;
+    }
+
+    public boolean getIsFirstState(){
+        return isFirstState;
+    }
+
+    public boolean getIsLastState(){
+        return isLastState;
+    }
+
 }
